@@ -1,0 +1,169 @@
+\documentclass{article}
+
+\usepackage[margin={1in,1in}]{geometry}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{listings, color}
+
+\lstset{ %
+  language=R,                     % the language of the code
+  basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{red},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
+                                  % will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. commens (green here))
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+                                  % also try caption instead of title
+  commentstyle=\color{blue},   % comment style
+  keywordstyle=\color{blue},      % keyword style
+  stringstyle=\color{red},      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}            % if you want to add more keywords to the set
+} 
+
+\begin{document}
+
+\title{Homework 2 -- Association Statistics}
+\author{Jacob Nisnevich}
+
+\maketitle
+
+\section{Association Study at a Single SNP}
+
+\subsection{Calculating the Non-Centrality Parameter}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		500 individuals & \multicolumn{3}{|c|}{Allele Frequency} \\
+		\hline
+		Relative Frequency & 0.05 & 0.2 & 0.4 \\
+		\hline
+		1.5 & 1.52396 & 2.70666 & 3.178209 \\
+		\cline{2-4}
+		2.0 & 2.756259 & 4.767313 & 5.423261 \\
+		\cline{2-4}
+		3.0 & 4.697591 & 7.784989 & 8.451543 \\
+		\hline
+	\end{tabular}
+	\caption{500 Indivduals}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		1000 individuals & \multicolumn{3}{|c|}{Allele Frequency} \\
+		\hline
+		Relative Frequency & 0.05 & 0.2 & 0.4 \\
+		\hline
+		1.5 & 2.155205 & 3.827795 & 4.494666 \\
+		\cline{2-4}
+		2.0 & 3.897938 & 6.741999 & 7.66965 \\
+		\cline{2-4}
+		3.0 & 6.643397 & 11.00964 & 11.95229 \\
+		\hline
+	\end{tabular}
+	\caption{1000 Indivduals}
+\end{table}
+
+\subsection{Calculating the power}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		500 individuals & \multicolumn{3}{|c|}{Allele Frequency} \\
+		\hline
+		Relative Frequency & 0.05 & 0.2 & 0.4 \\
+		\hline
+		1.5 & 0.331664 & 0.7723779 & 0.8884346 \\
+		\cline{2-4}
+		2.0 & 0.7870708 & 0.9975024 & 0.9997332 \\
+		\cline{2-4}
+		3.0 & 0.9969058 & 1 & 1 \\
+		\hline
+	\end{tabular}
+	\caption{500 Indivduals}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		1000 individuals & \multicolumn{3}{|c|}{Allele Frequency} \\
+		\hline
+		Relative Frequency & 0.05 & 0.2 & 0.4 \\
+		\hline
+		1.5 & 0.5774172 & 0.9691072 & 0.9943728 \\
+		\cline{2-4}
+		2.0 & 0.9736868 & 0.9999991 & 1 \\
+		\cline{2-4}
+		3.0 & 0.9999986 & 1 & 1 \\
+		\hline
+	\end{tabular}
+	\caption{1000 Indivduals}
+\end{table}
+
+\subsection{Calculating the number of individuals}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{| c | c | c | c |}
+		\hline
+		& \multicolumn{3}{|c|}{Allele Frequency} \\
+		\hline
+		Relative Frequency & 0.05 & 0.2 & 0.4 \\
+		\hline
+		1.5 & 1690 & 536 & 389 \\
+		\cline{2-4}
+		2.0 & 517 & 173 & 134 \\
+		\cline{2-4}
+		3.0 & 178 & 65 & 55 \\
+		\hline
+	\end{tabular}
+	\caption{80\% Power}
+\end{table}
+
+\subsection{R Code}
+
+\lstinputlisting{problem1/problem1.r}
+
+\section{Unbalanced Cases and Controls}
+
+\subsection{3 Times as Many Cases as Controls}
+
+For two studies to have equivalent power, they must have equivalent non-centrality parameters. It is also known that $N^{+} = 3N^{-}$ Therefore: \\
+
+\begin{align*}
+\lambda_{A} \cdot \sqrt{N} &= \lambda_{A} \cdot \sqrt{\cfrac{2N^{+}N^{-}}{N^{+}+N^{-}}} \\
+\sqrt{N} &= \sqrt{\cfrac{2N^{+}N^{-}}{N^{+}+N^{-}}} \\
+N &= \cfrac{2N^{+}N^{-}}{N^{+}+N^{-}} \\
+N &= \cfrac{2(3N^{-})(N^{-})}{3N^{-}+N^{-}} \\
+N &= \cfrac{6(N^{-})^2}{4N^{-}} \\
+N &= \cfrac{3}{2} N^{-} \\
+\cfrac{2}{3} N &= N^{-}
+\end{align*}
+
+\noindent
+By substition we can also see that $N^{+} = 2N$. As the total size of the study is $\cfrac{N^{+}}{2} + \cfrac{N^{-}}{2}$, the final total in terms of $N$ is $\cfrac{1}{3}N + N = \cfrac{4}{3}N$.
+
+\subsection{Unlimited Number of Controls}
+
+Once again, we can set the two non-centrality parameters equal to compute the size of a study required for equivalent power. Skipping some simplification from the privous part we get the following limit:
+
+\begin{align*}
+N &= \lim_{N^{-}\to\infty} \cfrac{2N^{+}N^{-}}{N^{+}+N^{-}} \\
+N &= 2N^{+} \\
+\end{align*}
+
+\end{document}
